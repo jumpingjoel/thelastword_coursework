@@ -9,10 +9,8 @@ public class MovieDBUtils {
     private MovieDBUtils(){
 
     }
-
-    //TODO: GENERATE THIS
+    //TODO input your own key
     public final static String movieDBKey = "";
-
     public final static String urlBaseURL = "http://image.tmdb.org/t/p/w342/";
 
     //ParceableKeys

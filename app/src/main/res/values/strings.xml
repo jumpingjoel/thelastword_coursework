@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">The Last Word</string>
     <string name="error_message">Unable to refresh</string>
+    <string name="network_error_message">Unable to connect to the internet</string>
     <string name="search_most_popular">Most Popular</string>
     <string name="search_top_rated">Top Rated</string>
 </resources>

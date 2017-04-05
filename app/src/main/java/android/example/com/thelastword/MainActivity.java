@@ -6,6 +6,8 @@ import android.example.com.thelastword.moviedb.MovieDBPagePojo;
 import android.example.com.thelastword.moviedb.MovieDBPojo;
 import android.example.com.thelastword.moviedb.MovieDBUtils;
 import android.graphics.Point;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -38,10 +40,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        int numberOfColumnsInGrid = 2;
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        int imageHeight = size.y;
+        int imageHeight = size.y /numberOfColumnsInGrid;
 
 
         setContentView(R.layout.activity_main);
@@ -49,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_movies);
 
         //This is still a grid! I like the look with just one column..
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, numberOfColumnsInGrid);
 
         mRecyclerView.setLayoutManager(gridLayoutManager);
 
@@ -135,6 +138,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     }
 
     private  void showErrorMessage(){
+
+        if(!isOnline()){
+            mErrorDisplay.setText(R.string.network_error_message);
+        } else {
+            mErrorDisplay.setText(R.string.error_message);
+        }
         mErrorDisplay.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.INVISIBLE);
     }
@@ -177,5 +186,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         intentToStartMovieActivity.putExtra(MovieDBUtils.parceable_movie, movie);
         startActivity(intentToStartMovieActivity);
 
+    }
+
+    public boolean isOnline(){
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        return ni != null && ni.isConnected();
     }
 }
